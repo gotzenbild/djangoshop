@@ -1,0 +1,58 @@
+{% load static %}
+{% load staticfiles %}
+
+<div class="description-review-area pb-7 theme-bg product-cont">
+<div class="description-review-wrapper">
+<div class="description-review-topbar nav text-center">
+<a class="active" data-toggle="tab" href="#des-details1">Наші товари</a>
+</div>
+<div class="tab-content ">
+<div  class="tab-pane active">
+<div class="product-description-wrapper">
+<div class="product-area pb-40 " >
+
+<div class="product-top-bar section-border mb-35">
+
+</div>
+<div class="featured-product-active hot-flower owl-carousel product-nav">
+{% for the_product in products %}
+<div class="product-wrapper theme-bg">
+<div class="product-img">
+<a href="{{  the_product.get_absolute_url }} ">
+<img alt="" src="{{ the_product.image.url }}">
+</a>
+<div class="product-action">
+<a class="action-cart add_to_cart" data-slug = '{{ the_product.slug }}' title="Добавить в корзину">
+<i class="ti-shopping-cart"></i>
+</a>
+<a class="action-compare" href="{{ the_product.get_absolute_url }}" data-target="#exampleModal" data-toggle="modal" title="Подробности">
+<i class="ion-ios-search-strong"></i>
+</a>
+</div>
+</div>
+<div class="product-content text-left">
+<div class="product-hover-style">
+<div class="product-title">
+<h4>
+<a href="{{ the_product.get_absolute_url }}">{{ the_product.title }}</a>
+</h4>
+
+</div>
+<div class="cart-hover">
+<h4><a class="add_to_cart" data-slug = '{{ the_product.slug }}'>Добавить в корзину</a></h4>
+</div>
+<div class="product-price-wrapper">
+<span>{{ the_product.price }} грн/шт</span>
+</div>
+</div>
+<hr>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

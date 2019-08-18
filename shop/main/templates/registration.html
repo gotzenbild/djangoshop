@@ -1,0 +1,86 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block content %}
+<div class="container" >
+    <div class="login-form-container">
+        <h3 class="text-center">Регестрация нового пользователя</h3>
+            <br>
+        <div class="login-register-form">
+            <form action="" method="POST"  id="form" >
+                    {% csrf_token %}
+                    {{ form.username.label }}
+                    {{ form.username }}
+                    <p class="text-muted">
+                        {{ form.username.help_text }}
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            {{ form.password.label }}
+                            {{ form.password }}
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            {{ form.password_check.label }}
+                            {{ form.password_check}}
+                            <p class="text-muted">
+                            {{ form.password_check.help_text }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            {{ form.first_name.label }}
+                            {{ form.first_name }}
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            {{ form.last_name.label }}
+                            {{ form.last_name}}
+
+                        </div>
+                    </div>
+                    <br>
+                     <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            {{ form.phone.label }}
+                            {{ form.phone }}
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            {{ form.email.label }}
+                            {{ form.email }}
+                            <p class="text-muted">
+                            {{ form.email.help_text }}
+                            </p>
+                        </div>
+                    </div>
+                {% if form.errors %}
+                <div class="text-danger">
+                                    {{ form.non_field_errors }}
+                </div>
+                <br><br>
+                {% endif %}
+                <input id="form-but" type="submit" class="btn btn-success" value="Зарегестрироватся">
+            </form>
+            <form method="POST" id="check-form" style="display: none;">
+                <h4>На ваш e-mail был отправлен код подтверждения</h4>
+
+                {% csrf_token %}
+                {{ form_check }}
+                 <input  type="submit" class="btn btn-danger" value="Подтверить">
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#form-but').on('click',function(){
+        {% if not form.errors %}
+        $(document).getElementById('form').css('display','none')
+        $(document).getElementById('check-form').css('display','block')
+        {% endif %}
+    })
+})
+</script>
+{% endblock content %}

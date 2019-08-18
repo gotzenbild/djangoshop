@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+         <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static '/css/animate.css' %}">
+        <link rel="stylesheet" href="{% static '/css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static '/css/slick.css' %}">
+        <link rel="stylesheet" href="{% static '/css/chosen.min.css' %}">
+        <link rel="stylesheet" href="{% static '/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static  '/css/themify-icons.css' %}">
+        <link rel="stylesheet" href="{% static '/css/ionicons.min.css' %}">
+		<link rel="stylesheet" href="{% static '/css/jquery-ui.css' %}">
+        <link rel="stylesheet" href="{% static '/css/meanmenu.min.css' %}">
+        <link rel="stylesheet" href="{% static '/css/style.css' %}">
+        <link rel="stylesheet" href="{% static '/css/responsive.css' %}">
+        <script src="{% static '/js/vendor/modernizr-2.8.3.min.js' %}"></script>
+
+        <link rel="stylesheet" href="{% static 'css/wrapper.css' %}">
+
+
+    <title>Ekzofruitt</title>
+</head>
+<body class = "bg-img" >
+
+{% include "header.html" %}
+{% block content %}
+		<!-- Slider Start -->
+
+            <br>
+            <div class="cont">
+               <div class="main-text-area">
+                <h1>~ Смачні та корисні фрукти ~</h1>
+            </div>
+            <!--<br>-->
+            </div>
+
+            <!--{% for main_slide in main %}-->
+            <!--<div class="slider-active owl-dot-style owl-carousel">-->
+                    <!--<div class="container ">-->
+                        <!--<div class="slider-content slider-animated-2">-->
+                       <!--<h1 class="animated" >~ {{ main_slide.title }} ~</h1>-->
+
+                        <!--</div>-->
+                    <!--</div>-->
+            <!--</div>-->
+            <!--{% endfor %}-->
+		<!-- Slider End -->
+
+		<!-- Shop Page Area Start -->
+            <div class="shop-page-area  ptb-50">
+            <div class=" cont content">
+                <div class="row flex-row">
+
+                    <div class="col-lg-3 ">
+                        <div class="shop-sidebar-wrapper gray-bg-7 theme-bg shop-sidebar-mrg ">
+                            <div class="shop-widget">
+
+
+
+                                <div class="shop-catigory">
+                                    <form method="GET" action="checked_base">
+
+                                     <br>
+                                        {% for category in categories %}
+                                            <label class="containerCheck" id="label-{{ category.slug }}" >{{ category.name }}
+                                            <input type="checkbox" id="check-c-{{ category.slug }}" class="check-button">
+                                            <span class="checkmark"></span>
+                                            </label>
+                                    <br>
+                                        {% endfor %}
+
+                                                <button type="button" class="un-button un" >Зкинути</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+                    <div class="col-lg-9 " >
+                        <div class="shop-topbar-wrapper theme-bg ">
+                            <div class="shop-topbar-left ">
+                                <ul class="view-mode">
+                                    <li class="active"><a href="#product-grid" data-view="product-grid"><i class="fa fa-th"></i></a></li>
+                                    <li><a href="#product-list" data-view="product-list"><i class="fa fa-list-ul"></i></a></li>
+                                </ul>
+                                <p class="text-right">{% if request.session.check_qty <= request.session.check_len %} {{ request.session.check_qty }} {% else %} {{ request.session.check_len }} {% endif %} из {{ request.session.check_len }} результатов  </p>
+                            </div>
+                                <div class="product-sorting-wrapper">
+                                    <div class="product-show shorting-style">
+
+                                    </div>
+                            </div>
+                            <div class="product-show shorting-style">
+                                            <p class="range-inline" >Сортувати:</p>
+                                        <select id="check-sort" class="range-inline" >
+                                            <option value="default">Звичайна</option>
+                                            <option value="name">За назвою</option>
+                                            <option value="price">За ціною</option>
+                                        </select>
+                                        <button type="button" class="ok_but check-button">Ок</button>
+                            </div>
+                        </div>
+                        <div class="grid-list-product-wrapper ">
+                            <div class="product-grid product-view pb-20">
+                                <div class="row">
+                                    {% for product in products %}
+                                       <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30 ">
+                                        <div class="product-wrapper theme-bg">
+                                            <div class="product-img">
+                                                <a href="{{ product.get_absolute_url }}" >
+                                                    <img alt="" src="{{ product.image.url }}" >
+                                                </a>
+                                                <div class="product-action">
+													<a class="action-cart add_to_cart" data-slug = '{{ product.slug }}' href="#" title="Добавити до корзини">
+                                                            <i class="ti-shopping-cart"></i>
+													</a>
+													<a class="action-compare" href="{{ product.get_absolute_url }}"  title="Деталі">
+														<i class="ion-ios-search-strong"></i>
+													</a>
+                                                </div>
+                                            </div>
+                                            <div class="product-content text-left">
+												<div class="product-hover-style">
+													<div class="product-title">
+														<h4>
+															<a style="font-size: 25px" href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+														</h4>
+													</div>
+													<div class="cart-hover">
+														<h4><a  class="action-cart add_to_cart" data-slug = '{{ product.slug }}'  href="#">+ Добавить в корзину</a></h4>
+													</div>
+												</div>
+												<div class="product-price-wrapper">
+													<span style="font-size: 25px">{{ product.price }} грн /{% if '1' == product.quantity %}{% else %} {{ product.quantity }}  {% endif %} шт</span>
+                                                      												</div>
+											</div>
+                                            <div class="product-list-details">
+                                                <h4>
+                                                    <a href="{{ product.get_absolute_url }}" >{{ product.title }}</a>
+                                                </h4>
+                                                <div class="product-price-wrapper">
+                                                    <span>₴ {{ product.price }} шт.</span>
+                                                </div>
+                                                <div class="scrollbar" id="style-3">
+                                                <div class="force-overflow"><p>{{ product.description }}</p></div>
+                                                </div>
+                                                <div class="shop-list-cart-wishlist">
+                                                    <a class="action-cart add_to_cart" data-slug = '{{ product.slug }}' href="#" title="Добавить в корзину"><i class="ti-shopping-cart"></i></a>
+                                                    <a href="{{ product.get_absolute_url }}"  title="Детали">
+                                                        <i class="ion-ios-search-strong"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                            </div>
+                            <div class="pagination-total-pages theme-bg">
+                                <div class="pagination-style">
+                                    <ul>
+                                        <li><a class="prev-next prev check-button" href="#"><i class="ion-ios-arrow-left"></i> Попередня</a></li>
+                                        {% for i in list_qty %}
+                                            {% if i == request.session.check_list %}
+                                                <li><a class="check-button active list_n" href="#">{{ i }}</a></li>
+                                            {% else %}
+                                                <li><a class="check-button list_n" href="#">{{ i }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        <li><a class="prev-next next check-button" href="#">Наступна<i class="ion-ios-arrow-right"></i> </a></li>
+                                    </ul>
+                                </div>
+                                <div class="total-pages" >
+                                      <p class="text-right">{% if request.session.check_qty <= request.session.check_len %} {{ request.session.check_qty }} {% else %} {{ request.session.check_len }} {% endif %} з {{ request.session.check_len }} результатів  </p>
+                                </div>
+                            </div>
+
+                    </div>
+
+            </div>
+        </div>
+		<!-- Shop Page Area End -->
+
+        </div>
+
+<script>
+    document.getElementById('check-sort').value = '{{ request.session.check_sort }}'
+     {% for category in request.session.check_category %}
+        {% if category != "all" %}
+    document.getElementById("check-c-{{ category }}").checked = true
+        {% endif %}
+      {% endfor %}
+
+
+    $('.check-button').on('click',function(){
+        if ($(this).hasClass("prev")) {
+            check_list = {{ request.session.check_list }}-1 ;
+        }
+        else if ($(this).hasClass("next")) {
+            check_list = {{ request.session.check_list }}+1 ;
+        }
+        else if ($(this).hasClass("list_n")) {
+            check_list= $(this).html()
+        }
+        else {
+            check_list = {{ request.session.check_list }}
+        }
+        check_sort = document.getElementById("check-sort")
+        check_sort = check_sort.options[check_sort.selectedIndex].value
+        check_category=[]
+        {% for category in categories %}
+        if  (document.getElementById("check-c-{{ category.slug }}").checked)
+        {
+            check_category.push('{{ category.slug }}')
+        }
+        {% endfor %}
+
+
+        data = {
+            check_sort:  check_sort,
+            check_category : check_category,
+            check_list : check_list
+        }
+        $.ajax({
+            type : "GET",
+            url : '{% url "checked_base" %}' ,
+            data : data,
+            success : function(){
+                location.reload(true)
+            }
+        })
+    })
+
+   $('.un-button').on('click',function(){
+    check_sort = "default"
+    check_category = ["all"]
+    data={
+        check_sort:  check_sort,
+        check_category : check_category,
+        check_list : 1
+    }
+    $.ajax({
+        type : "GET",
+        url : '{% url "checked_base" %}' ,
+        data : data,
+        success : function(){
+           location.reload(true)
+
+        }
+    })
+    })
+</script>
+{% endblock content %}
+
+       <!-- Footer style Start -->
+<div>
+    <footer class=" pt-75 gray-bg-3 "  id="footer" >
+            <div class="gray-bg-3 pb-35">
+                <div class="cont">
+                    <div class="row">
+						<div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="footer-widget mb-40">
+                                <div class="footer-title mb-25">
+                                    <br>
+                                <h4>Контакти: +380635913570 </h4>
+                                <h4> Viber:  +380635913570</h4>
+                                </div>
+                                <div class="footer-content">
+
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-12">
+                            <div class="pro-dec-social">
+                                <ul>
+                                    <li><a class="share" href="https://www.facebook.com/ekzotikfruits/"><i class="ion-social-facebook"></i> Share</a></li>
+                                      <li><a class="google" href="https://www.instagram.com/ekzotik_fruits/"><i class="ion-social-instagram-outline"></i> Instagram</a></li>
+                                </ul>
+                            </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom pb-25 pt-25 gray-bg-2">
+                <div class="cont">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="copyright">
+                                <p>Copyright © <a href="#">Krivosheyev Eric</a>. All Right Reserved.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="payment-img f-right">
+                                <a href="#">
+                                    <img alt="" src="assets/img/icon-img/payment.png">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+</div>
+
+		<!-- Footer style End -->
+
+</body>
+
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="{% static '/js/vendor/jquery-1.12.0.min.js' %}"></script>
+<script src="{% static '/js/popper.js' %}"></script>
+<script src="{% static '/js/bootstrap.min.js' %}"></script>
+<script src="{% static '/js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static '/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static '/js/ajax-mail.js' %}"></script>
+<script src="{% static '/js/owl.carousel.min.js' %}"></script>
+<script src="{% static '/js/plugins.js' %}"></script>
+<script src="{% static '/js/main.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+
+    $('.add_to_cart').on('click', function(e){
+    e.preventDefault()
+    product_slug = $(this).attr('data-slug')
+    try {
+        product_qty = document.getElementById('product-qty-'+product_slug).value
+    }
+    catch {
+       product_qty =1
+    }
+    data = {
+        product_slug : product_slug,
+        product_qty : product_qty
+    }
+    $.ajax({
+        type : "GET",
+        url : '{% url "add_to_cart" %}' ,
+        data : data,
+        success : function(data){
+            $(".cart_count").html(data.cart_total)
+        }
+    })
+})
+</script>
+
+
+
+
+</html>
+

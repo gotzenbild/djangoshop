@@ -1,0 +1,117 @@
+{% load static %}
+{% load staticfiles %}
+<header class="header-area theme-bg clearfix"  >
+            <div class="header-bottom">
+                <div class="cont" >
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-6">
+                            <div class="logo">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-6">
+                            <div class="header-bottom-right">
+                                <div class="main-menu">
+                                    <nav>
+                                        <ul>
+
+                                            <li><a href="{% url 'base' %}">Головна</a></li>
+                                            <li><a href="{% url 'base' %}">Доставка</a></li>
+                                            <li><a href="{% url 'delivery_terms' %}">Умови замовлення</a></li>
+                                            {% if not request.user.is_authenticated %}
+                                            <li><a > Вітаю, гість!</a></li>
+                                            <li><a href="{% url 'registration' %}">Реєстрація</a></li>
+                                            <li><a href="{% url 'login' %}">Вхід</a></li>
+                                            {% else %}
+                                            <li><a href="{% url 'user_account' %}">Власний кабінет</a></li>
+                                            <li><a href="{% url 'logout' %}">Вийти</a></li>
+                                            {% endif %}
+
+                                        </ul>
+                                    </nav>
+                                </div>
+
+                                <div class="header-currency">
+                                    <span class="digit cart_count">{{ c }} </span>
+                                </div>
+
+                                <div class="header-cart">
+                                    <a href="{% url 'cart' %}">
+                                        <div class="cart-icon">
+                                            <i class="ti-shopping-cart"></i>
+                                        </div>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mobile-menu-area">
+                        <div class="mobile-menu">
+                            <nav id="mobile-menu-active">
+                                <ul class="menu-overflow">
+                                            <li><a href="{% url 'base' %}">Головна</a></li>
+                                             <li><a href="{% url 'base' %}">Доставка</a></li>
+                                            <li><a href="{% url 'base' %}">Умови замовлення</a></li>
+
+                                            {% if not request.user.is_authenticated %}
+                                            <li><a > Вітаю, гість!</a></li>
+                                            <li><a href="{% url 'registration' %}">Реєстрація</a></li>
+                                            <li><a href="{% url 'login' %}">Вхід</a></li>
+
+                                            {% else %}
+                                            <li><a href="{% url 'user_account' %}">Власний кабінет</a></li>
+                                            <li><a href="{% url 'logout' %}">Вийти</a></li>
+                                            {% endif %}
+                                </ul>
+
+                            </nav>
+                        </div>
+                    </div>
+            </div>
+        </div>
+</header>
+
+<script>
+$(document).ready(function(){
+    data = {}
+    $.ajax({
+        type : "GET",
+        url : '{% url 'get_count' %}' ,
+        success : function(data){
+            if( {{ c }} != data.cart_total )
+            {
+            $(".cart_count").html(data.cart_total)
+            }
+               }
+        })
+    $('.remove_from_cart').on('click', function(e){
+        e.preventDefault()
+        product_slug = $(this).attr('data-slug')
+        item_product_id = $(this).attr('data-id')
+        data = {
+            product_slug : product_slug
+        }
+        $.ajax({
+            type : "GET",
+            url : '{% url "remove_from_cart" %}' ,
+            data : data,
+            success : function(data){
+                if (data.cart_total ==0 ){
+                        location.reload(true)
+
+                    }
+                $('.cart_count').html(data.cart_total)
+                $('.cart-item-'+item_product_id).css('display' , 'none')
+                $('.cart-total-price').html('₴ '+parseFloat(data.cart_total_price).toFixed(2))
+            }
+        })
+    })
+
+})
+</script>
+
+
+
+</script>
+

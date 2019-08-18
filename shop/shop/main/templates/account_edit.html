@@ -1,0 +1,60 @@
+{% extends 'wrapper.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="container" >
+<div class="order-form-container">
+    <div class="login-register-form">
+        <form action="account_edit" method="POST">
+        {% csrf_token %}
+                {{ edit_form.first_name.label }}
+                {{ edit_form.first_name }}
+                {{ edit_form.last_name.label }}
+                {{ edit_form.last_name }}
+                {{ edit_form.phone.label }}
+                {{ edit_form.phone }}
+            <input type="submit" class="" value="Редактировать">
+         <input type="hidden" class="btn btn-success btn-block" name="form_type" value="EDIT">
+        </form>
+    </div>
+</div>
+<!--<div class="order-form-container">-->
+    <!--<div class="login-register-form">-->
+        <!--<form action="account_edit" method="POST"  id="edit-email-form">-->
+        <!--{% csrf_token %}-->
+        <!--{{ edit_email }}-->
+        <!--<br>-->
+         <!--<input type="hidden" class="btn btn-success btn-block" name="form_type" value="EMAIL">-->
+        <!--<input type="submit" class="btn btn-success btn-block"  value="Изменить email">-->
+        <!--</form>-->
+   <!--</div>-->
+<!--</div>-->
+    <!--<div class="order-form-container">-->
+    <!--<div class="login-register-form">-->
+        <!--<form action="account_edit" method="POST" id="edit-pass-form">-->
+        <!--{% csrf_token %}-->
+        <!--{{ edit_pass_form }}-->
+        <!--<br>-->
+        <!--<input type="hidden" class="btn btn-success btn-block" name="form_type" value="PASS">-->
+        <!--<input type="submit" class="btn btn-success btn-block"  value="Изменить пароль">-->
+        <!--</form>-->
+
+        <!--</div>-->
+<!--</div>-->
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    document.getElementById('id_first_name').value = '{{ user.first_name }}'
+    document.getElementById('id_last_name').value = '{{ user.last_name }}'
+    document.getElementById('id_phone').value = '{{ phone }}'
+
+
+    {% if edit_display %}
+    $('#edit-butt')[0].click()
+    {% endif %}
+})
+
+</script>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% load static %}
+{% load staticfiles %}
+<header class="header-area theme-bg clearfix"  >
+            <div class="header-bottom">
+                <div class="container" >
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-6">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img alt="" src="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-6">
+                            <div class="header-bottom-right">
+                                <div class="main-menu">
+                                    <nav>
+                                        <ul>
+                                            <li><a href="{% url 'base' %}">Главная</a></li>
+                                            <li><a href="#">О нас</a></li>
+                                            {% if not request.user.is_authenticated %}
+                                            <li><a > Здравствуйте, гость!</a></li>
+                                            <li><a href="{% url 'registration' %}">Регестрация</a></li>
+                                            <li><a href="{% url 'login' %}">Вход</a></li>
+                                            {% else %}
+                                            <li><a href="{% url 'user_account' %}">Личный кабинет</a></li>
+                                            <li><a href="{% url 'logout' %}">Выйти</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+
+                                <div class="header-currency">
+                                    <span class="digit cart_count">{{ c }} </span>
+                                </div>
+
+                                <div class="header-cart">
+                                    <a href="{% url 'cart' %}">
+                                        <div class="cart-icon">
+                                            <i class="ti-shopping-cart"></i>
+                                        </div>
+                                    </a>
+                                    <div class=" shopping-cart-content theme-bg " {% if cart.item.count == 0  %} style="display:none"> {% endif %} >
+                                        <div class="cart-table ">
+                                        <ul>
+                                            {% for item in cart.item.all %}
+                                            <li class="single-shopping-cart cart-item-{{ item.product.id }}">
+                                                <a href="{{ item.product.get_absolute_url }}" >
+                                                <div class="shopping-cart-img">
+                                                        <img alt="" src="">
+                                                </div>
+                                                </a>
+                                                <div class="shopping-cart-title">
+                                                    <h4><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></h4>
+                                                    <h6>Количество: {{ item.qty }}</h6>
+                                                    <span>Цена: {{ item.item_total }}</span>
+                                                </div>
+                                                <div class="shopping-cart-delete">
+                                                   <a href='' class="remove_from_cart" data-slug="{{ item.product.slug }}" data-id ='{{ item.product.id }}'>
+                                                       <i class="ion ion-close"></i>
+                                                   </a>
+                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        </div>
+                                        <div class="shopping-cart-total">
+                                            <h4>Итого : <span class="shop-total" id="cart-total-price">{{ cart.cart_total }} грн.</span> </h4>
+                                        </div>
+                                        <div class="shopping-cart-btn">
+                                            <a href="{% url 'cart' %}">Корзина</a>
+                                            <a href="{% url 'checkout' %}">Заказать</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mobile-menu-area">
+                        <div class="mobile-menu">
+                            <nav id="mobile-menu-active">
+                                <ul class="menu-overflow">
+                                            <li><a href="{% url 'base' %}">Главная</a></li>
+                                            <li><a href="#">О нас</a></li>
+
+                                            {% if not request.user.is_authenticated %}
+                                            <li><a > Здравствуйте, гость!</a></li>
+                                            <li><a href="{% url 'registration' %}">Регестрация</a></li>
+                                            <li><a href="{% url 'login' %}">Вход</a></li>
+                                            {% else %}
+                                            <li><a href="{% url 'user_account' %}">Личный кабинет</a></li>
+                                            <li><a href="{% url 'logout' %}">Выйти</a></li>
+                                            {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+            </div>
+        </div>
+</header>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    data = {}
+    $.ajax({
+        type : "GET",
+        url : '{% url 'get_count' %}' ,
+        success : function(data){
+            if( {{ c }} != data.cart_total )
+            {
+            $(".cart_count").html(data.cart_total)
+            }
+               }
+        })
+    $('.remove_from_cart').on('click', function(e){
+        e.preventDefault()
+        product_slug = $(this).attr('data-slug')
+        item_product_id = $(this).attr('data-id')
+        data = {
+            product_slug : product_slug
+        }
+        $.ajax({
+            type : "GET",
+            url : '{% url "remove_from_cart" %}' ,
+            data : data,
+            success : function(data){
+                if (data.cart_total ==0 ){
+                        $('.cart-table').html('<tr ><td><h4 class="text-danger">В корзине пока нет товаров</h4></td><td></td><td></td><td></td><td></td><td></td></tr>')
+                        $('.grand-total').css('display' , 'none')
+                        $('.shopping-cart-content').css('display' , 'none')
+                    }
+                $('.cart_count').html(data.cart_total)
+                $('.cart-item-'+item_product_id).css('display' , 'none')
+                $('.cart-total-price').html('₴ '+parseFloat(data.cart_total_price).toFixed(2))
+            }
+        })
+    })
+
+})
+</script>
+

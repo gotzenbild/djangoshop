@@ -1,0 +1,111 @@
+{% extends 'wrapper.html' %}
+{% load staticfiles %}
+{% block content %}
+
+
+<div class="row width-for-user-account">
+       <br>
+   <div class=" user-info table-overflow col-md-3 col-sm-12"  >
+
+    <div class="user-info-header">
+         <h3 >Ваш профіль </h3>
+    </div>
+   <br>
+       <br>
+       <div class="user-info-main">
+            <h5 class="user-info-main-color2">Логін:  </h5><div class="user-info-dov "><h5 class="user-info-main-color">{{ user.username }}</h5></div>
+           <h5 class="user-info-main-color2">Ім'я: </h5><div class="user-info-dov "><h5 class="user-info-main-color">{{ user.first_name }} {{ user.last_name }}</h5></div>
+           <h5 class="user-info-main-color2">Номер: </h5><div class="user-info-dov "><h5 class="user-info-main-color">{{ phone }} </h5></div>
+           <h5 class="user-info-main-color2">Email:  </h5><div class="user-info-dov "><h5 class="user-info-main-color"   >{{ user.email }}</h5></div>
+      <br>
+        <!--<div class="cart-shiping-update center  " style=""><a  class="center" href="{% url 'account_edit' %}" >Редагувати</a> </div>-->
+           <br>
+       </div>
+   </div>
+    <div class="cart-main-area  col-md-9 col-sm-12">
+    <br>
+                <div class="cart-container">
+                            <div class="table-content table-responsive table-overflow scrollbar" id="style-3" style="max-height:700px;"  >
+                            <div class="force-overflow">
+                            <table class="width-100">
+                                    <thead>
+                                    <tr>
+                                         <td colspan=5 style="font-size:15px">Ваші замовлення</td>
+                                    </tr>
+                                <tr>
+                                    <td>Номер замовлення</td>
+                                    <td>Дата замовлення</td>
+                                    <td>Вартість замовлення</td>
+                                    <td>Деталі замовлення</td>
+                                </tr>
+                                    </thead>
+                                <tbody >
+                                 {% for item in order %}
+
+                                <tr class="theme-bg product-cont" >
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.date }}</td>
+                                    <td>₴ {{ item.total }}</td>
+                                    <td>
+
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal-{{ item.id }}">Деталі замовлення
+                                        </button>
+
+                                        <div class="modal fade" id="myModal-{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">Замовлення №-{{ item.id }}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                <tr>
+                                                        <td>Назва</td>
+                                                        <td>Кількість</td>
+                                                        <td>Вартість</td>
+                                                    </tr>
+
+                                                {% for item in item.items.item.all %}
+                                                    <tr>
+                                                       <td>{{ item.product.title }}</td>
+                                                        <td>{{ item.qty }} шт.</td>
+                                                        <td>{{ item.item_total }} грн.</td>
+                                                    </tr>
+
+                                                    {% endfor %}
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>Загальна вартість: </td>
+                                                        <td>₴ {{ item.total }}</td>
+
+                                                    </tr>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <a class="resale-but btn btn-success" href="/again/{{ item.id }}/">Замовити</a>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                                </table>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+<br>
+    </div>
+
+
+</div>
+
+
+{% endblock content %}
+

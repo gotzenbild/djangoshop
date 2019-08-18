@@ -1,0 +1,79 @@
+{% extends 'wrapper.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="cart-main-area ptb-100">
+    <div class="container" >
+        <h2 class="page-title">Ваш заказ </h2><br>
+        <div class="table-content table-responsive">
+            <table class="container">
+                <thead>
+                    <tr class="success-bg">
+                        <th>Название товара</th>
+                        <th>Количество</th>
+                        <th>Стоимость</th>
+                    </tr>
+                </thead>
+                <tbody  class="cart-table" >
+                {% for item in cart.item.all %}
+                    <tr  class="cart-item-{{ item.product.id }} theme-bg product-cont">
+                        <td class="product-name"><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></td>
+                        <td class="product-quantity">{{ item.qty }}</td>
+                        <td class="text-center" >₴ {{ item.item_total }}</td>
+                    </tr>
+                {% endfor %}
+                    <tr class="theme-bg product-cont">
+                        <td></td>
+                        <td><h5>Итоговая цена:</h5></td>
+                        <td><span class="text-center cart-total-price" ><h5>₴ {{ cart.cart_total }}</h5></span></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <br>
+        <div class="order-form-container">
+            <div class="login-register-form">
+                <form action="{% url 'thank_you' %}" method="POST"  >
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                {{ form.name.label }}
+                                {{ form.name }}
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                {{ form.last_name.label }}
+                                {{ form.last_name }}
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                {{ form.phone.label }}
+                                {{ form.phone }}
+                            </div>
+                        </div>
+                    <br>
+                        {{ form.address.label }}
+                        {{ form.address }}
+                    <p class="text-muted">{{ form.address.help_text }}</p>
+                        {{ form.comments.label }}
+                        {{ form.comments }}
+                    <input  type="submit" class="btn btn-success" value="Заказать">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    document.getElementById('id_name').value = '{{ user.first_name }}'
+    document.getElementById('id_last_name').value = '{{ user.last_name }}'
+    document.getElementById('id_phone').value = '{{ phone.phone }}'
+
+</script>
+
+{% endblock content %}

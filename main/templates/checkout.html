@@ -1,0 +1,146 @@
+{% extends 'wrapper.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+<div class="cart-main-area ptb-100">
+    <div class="cont" >
+
+        <div class="table-content table-responsive table-overflow">
+            <table class="width-100" >
+                <thead>
+                 <tr>
+                     <th colspan=5 style="font-size:15px">Ваше замовлення</th>
+                </tr>
+                    <tr class="success-bg">
+                        <th>Назва товара</th>
+                        <th>Кільсість</th>
+                        <th>Вартість</th>
+                    </tr>
+                </thead>
+                <tbody  class="cart-table" >
+                {% for item in cart.item.all %}
+                  <div class="force-overflow">
+                    <tr  class="cart-item-{{ item.product.id }} theme-bg table-content">
+                        <td class="product-name"><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></td>
+                        <td class="product-quantity">{{ item.qty }}</td>
+                        <td class="text-center" >{{ item.item_total }} грн.</td>
+                    </tr>
+                  </div>
+                {% endfor %}
+                    <tr class="theme-bg table-content">
+                        <td></td>
+                        <td><h5>Загальна вартість:</h5></td>
+                        <td><span class="text-center cart-total-price" ><h5>{{ cart.cart_total }} грн.</h5></span></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+        <br>
+        <div class="order-form-container">
+            <div class="login-register-form">
+                <form action="{% url 'thank_you' %}" method="POST"  >
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                {{ form.name.label }}
+                                {{ form.name }}
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                {{ form.last_name.label }}
+                                {{ form.last_name }}
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                {{ form.phone.label }}
+                                {{ form.phone }}
+                            </div>
+                        </div>
+                     {{ form.address.label }}
+                        {{ form.address }}
+                        <p class="text-muted">{{ form.address.help_text }}</p>
+
+                      {{ form.sticker.label }}
+                      {{ form.sticker }}
+                      <br><br>
+                      {% for stick_img in sticks_img %}
+                      <div class="stickers-wrapper" id="{{ stick_img.slug }}">
+                        <div class="stickers-img">
+                            <img  alt="" src="{{ stick_img.image.url }}" >
+                        </div>
+                     </div>
+                     {% endfor %}
+                    <br>
+                    <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        {{ form.datep.label }}
+                        {{ form.datep }}
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                            {{ form.payment.label }}
+                      {{ form.payment }}
+                    </div>
+
+                    </div>
+
+                        {{ form.comments.label }}
+                        {{ form.comments }}
+                    <input  type="submit" class="btn btn-success" value="Замовити">
+                </form>
+
+            </div>
+    </div>
+
+    </div>
+</div>
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{% static '/css/jquery-ui.css'%}">
+
+<script type="text/javascript">
+$(document).ready(function() {
+$("#id_datep").datepicker({
+ monthNames: [
+'Січень', 'Лютий', 'Березень', 'Квітень',
+'Травень', 'Червень', 'Липень', 'Серпень', 'Вересень',
+'Жовтень', 'Листопад', 'Грудень'],
+ dayNamesMin: ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'],
+ firstDay: 1,
+});
+});
+$(function() {
+
+$('#id_datep').datepicker();
+
+});
+</script>
+
+<script>
+
+    document.getElementById('id_name').value = '{{ user.first_name }}'
+    document.getElementById('id_last_name').value = '{{ user.last_name }}'
+    document.getElementById('id_phone').value = '{{ phone.phone }}'
+
+</script>
+
+<script>
+        stick_ind = document.getElementById("id_sticker")
+        stick_slug = id_sticker.options[stick_ind.selectedIndex].value
+        document.getElementById(stick_slug).style= "display : inline;"
+
+    $('#id_sticker').on('click',function(e){
+        {% for stick_img in sticks_img %}
+            document.getElementById({{ stick_img.slug }}).style= "display : none;"
+        {% endfor %}
+        stick_ind = document.getElementById("id_sticker")
+        stick_slug = id_sticker.options[stick_ind.selectedIndex].value
+        document.getElementById(stick_slug).style= "display : inline;"
+    })
+</script>
+
+{% endblock content %}
+
+

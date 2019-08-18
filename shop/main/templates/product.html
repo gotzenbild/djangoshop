@@ -1,0 +1,141 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Product Deatils Area Start -->
+        <div class="product-details pt-100 pb-95 ">
+            <div class="container theme-bg product-cont">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 ">
+                        <div class="product-details-img">
+                            <img class="detait-img" src="{{ product.image.url }}"  alt=""/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="product-details-content">
+                            <h4>{{ product.title }}</h4>
+                        </div>
+                            <br>
+                            <p>{{ product.description }} </p>
+
+                            <span>₴ {{ product.price }} шт.</span>
+                            <div class="quality-add-to-cart">
+                                <div class="quality">
+                                    <label>Количество : </label>
+                                    <input id="product-qty-{{ product.slug }}"  data-id="{{ item.id }}" type ="number" name="qty" value="1" min="1">
+                                </div>
+                                <div class="shop-list-cart-wishlist">
+                                    <a title="Добавить в корзину" class="add_to_cart" data-slug = '{{ product.slug }}'>
+                                        <i class="ti-shopping-cart"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="pro-dec-categories">
+                                <ul>
+                                    <li class="categories-title">Категория:</li>
+                                    <li><a href="#">{{ product.category }}</a></li>
+                                </ul>
+                            </div>
+                            <div class="pro-dec-categories">
+                                <ul>
+                                    <li class="categories-title">Теги: </li>
+                                    <li><a href="#"> {{ product.category }} </a></li>
+                                    <li><a href="#"> {{ product.title }} </a></li>
+                                </ul>
+                            </div>
+                            <div class="pro-dec-social">
+                                <ul>
+                                    <li><a class="tweet" href="#"><i class="ion-social-twitter"></i> Tweet</a></li>
+                                    <li><a class="share" href="#"><i class="ion-social-facebook"></i> Share</a></li>
+                                    <li><a class="google" href="#"><i class="ion-social-instagram-outline"></i> Instagram</a></li>
+                                    <li><a class="pinterest" href="#"><i class="ion-social-pinterest"></i> Pinterest</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<!-- Product Deatils Area End -->
+<div class="description-review-area pb-70">
+            <div class="container theme-bg product-cont">
+                <div class="description-review-wrapper">
+                    <div class="description-review-topbar nav text-center">
+                        <a class="active" data-toggle="tab" href="#des-details1">Описание</a>
+                    </div>
+                    <div class="tab-content description-review-bottom">
+                        <div id="des-details1" class="tab-pane active">
+                            <div class="product-description-wrapper">
+                                {{ product.description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="description-review-area pb-70">
+            <div class="container theme-bg product-cont">
+                <div class="description-review-wrapper">
+                    <div class="description-review-topbar nav text-center">
+                        <a class="active" data-toggle="tab" href="#des-details1">Похожие товары</a>
+                    </div>
+                    <div class="tab-content description-review-bottom">
+                        <div  class="tab-pane active">
+                            <div class="product-description-wrapper">
+                                <div class="product-area pb-40 " >
+                                    <div class="container" >
+                                        <div class="product-top-bar section-border mb-35">
+
+                                        </div>
+                                        <div class="featured-product-active hot-flower owl-carousel product-nav">
+                                        {% for the_product in products %}
+                                            {% if the_product.category == product.category and the_product.slug != product.slug %}
+                                            <div class="product-wrapper">
+                                                <div class="product-img">
+                                                    <a href="{{  the_product.get_absolute_url }} ">
+                                                        <img alt="" src="{{ the_product.image.url }}">
+                                                    </a>
+                                                    <div class="product-action">
+                                                        <a class="action-cart add_to_cart" data-slug = '{{ the_product.slug }}' href="#" title="Добавить в корзину">
+                                                            <i class="ti-shopping-cart"></i>
+                                                        </a>
+                                                       <a href="{{  the_product.get_absolute_url }} ">
+
+                                                            <i class="ion-ios-search-strong"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content text-left">
+                                                    <div class="product-hover-style">
+                                                        <div class="product-title">
+                                                            <h4>
+                                                                <a href="{{ the_product.get_absolute_url }}">{{ the_product.title }}</a>
+                                                            </h4>
+
+                                                        </div>
+                                                        <div class="cart-hover">
+                                                            <h4><a class="add_to_cart"  href="#" data-slug =  '{{ the_product.slug }}'>+Добавить в корзину</a></h4>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                        {% endfor %}
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+{% endblock content %}

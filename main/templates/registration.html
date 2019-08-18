@@ -1,0 +1,87 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block content %}
+<div class="cont " >
+<div class="login-form-container ">
+        <div class="login-header">
+        <h3 class="text-center">Реєстрація</h3>
+        </div>
+
+        <div class="login-content">
+              <form action="" method="POST"  id="form" >
+                    {% csrf_token %}
+                  <div class="login-content-label"> {{ form.username.label }}</div>
+                    {{ form.username }}
+                  <div class="login-content-helptext">{{ form.username.help_text }}</div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="login-content-label">  {{ form.password.label }}</div>
+                            {{ form.password }}
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="login-content-label"> {{ form.password_check.label }}</div>
+                            {{ form.password_check}}
+
+                            <div class="login-content-helptext"> {{ form.password_check.help_text }}</div>
+                           </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="login-content-label"> {{ form.first_name.label }}</div>
+                            {{ form.first_name }}
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="login-content-label"> {{ form.last_name.label }}</div>
+                            {{ form.last_name}}
+
+                        </div>
+                    </div>
+                    <br>
+                     <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="login-content-label"> {{ form.phone.label }}</div>
+                            {{ form.phone }}
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="login-content-label">  {{ form.email.label }}</div>
+                            {{ form.email }}
+                            <div class="login-content-helptext">{{ form.email.help_text }}</div>
+
+                        </div>
+                    </div>
+                {% if form.errors %}
+                <div class="login-error">
+                                    {{ form.non_field_errors }}
+                </div>
+                <br><br>
+                {% endif %}
+                <input id="form-but" type="submit" class="btn btn-success" value="Зареєструватися">
+            </form>
+            <form method="POST" id="check-form" style="display: none;">
+                <h4>На ваш e-mail был отправлен код подтверждения</h4>
+
+                {% csrf_token %}
+                {{ form_check }}
+                 <input  type="submit" class="btn btn-danger" value="Підтвердити">
+            </form>
+        </div>
+    <br><br>
+
+    {% include "products_scroll.html" %}
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#form-but').on('click',function(){
+        {% if not form.errors %}
+        $(document).getElementById('form').css('display','none')
+        $(document).getElementById('check-form').css('display','block')
+        {% endif %}
+    })
+})
+</script>
+{% endblock content %}

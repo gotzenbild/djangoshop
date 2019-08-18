@@ -1,0 +1,42 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container" >
+    <div class="login-form-container">
+        <h3 class="text-center">Авторизация пользователя</h3>
+            <br>
+        <div class="login-register-form">
+            <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.username.label }}
+            {{ form.username }}
+                <br>
+            {{ form.password.label }}
+            {{ form.password }}
+
+            {% if form.errors %}
+            <br>
+            <div class="text-danger">
+                {{ form.non_field_errors }}
+            </div>
+            <br>
+            {% else %}
+                <br>
+                <br>
+            {% endif %}
+             <input type="submit" class="btn btn-success btn-block" value="Авторизироватся">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<br><br><br><br><br><br><br><br><br>
+    <div class="col-sm-8 col-sm-offset-2">
+
+
+
+    </div>
+
+{% endblock content %}

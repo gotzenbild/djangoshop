@@ -1,0 +1,111 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block content %}
+         <!-- shopping-cart-area start -->
+        <div class="cart-main-area ptb-100">
+            <div class="container" >
+                <h2 class="page-title">Ваша корзина</h2><br>
+                <div class="row cart-container">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <form action="#">
+                            <div class="table-content table-responsive">
+                                <table class="container">
+                                    <thead>
+                                        <tr>
+                                            <th>Товар</th>
+                                            <th>Название товара</th>
+                                            <th>Цена</th>
+                                            <th>Количество</th>
+                                            <th>Стоимость</th>
+                                            <th>Удалить</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody  class="cart-table" >
+                                    {% for item in cart.item.all %}
+                                        <tr  class="theme-bg product-cont cart-item-{{ item.product.id }}">
+                                            <td class="product-thumbnail">
+                                            </td>
+                                            <td class="product-name"><a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a></td>
+                                            <td class="product-price-cart"><span class="amount">₴ {{ item.product.price }}</span></td>
+                                            <td class="product-quantity">
+                                                <div class="pro-dec-cart">
+                                                    <input class="cart-item-qty"  data-id="{{ item.id }}" type ="number" name="qty" value="{{ item.qty }}" min="1">
+                                                </div>
+                                            </td>
+                                            <td class="text-center" id ="cart-item-total-{{ item.id }}">₴ {{ item.item_total }}</td>
+                                            <td class="product-remove">
+                                                <a href='#' class="remove_from_cart" data-slug="{{ item.product.slug }}" data-id ='{{ item.product.id }}'>
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                           </td>
+
+                                    {% endfor %}
+                                    {% if cart.cart_total == 0 %}
+                                    <tr class="theme-bg" >
+                                        <td><h4 class="text-danger">В корзине пока нет товаров</h4></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-5 col-md-12">
+                                   <div class="cart-shiping-update">
+                                            <a href="{% url 'base' %}">Продолжить покупки</a>
+                                        </div>
+
+                            </div>
+                            <div class="col-lg-2 col-md-0">
+
+                            </div>
+                            <div class="col-lg-5 col-md-12">
+                                 {% if cart.cart_total != 0 %}
+                                <div class="grand-totall">
+                                    <h4 class="grand-totall-title">Итоговая цена: <span class="text-center cart-total-price" >₴ {{ cart.cart_total }}</span></h4>
+                                    <a href="{% url 'checkout' %}">Заказать</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    $('.cart-item-qty').on('click', function(){
+        qty= $(this).val()
+        item_id= $(this).attr('data-id')
+        data = {
+            qty: qty,
+            item_id : item_id
+            }
+
+        $.ajax({
+            type: "GET",
+            url:'{% url 'change_item_qty' %}' ,
+            data : data,
+            success :function(data ){
+                $(".cart_count").html(data.cart_total)
+                $('#cart-item-total-'+item_id).html('₴ '+parseFloat(data.item_total).toFixed(2))
+                $('.cart-total-price').html('₴ ' +parseFloat(data.cart_total_price).toFixed(2))
+            }
+            })
+
+    })
+})
+</script>
+
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% extends 'wrapper.html' %}
+{% load static %}
+{% block content %}
+
+<div class="cont login-form-container" >
+        <div class="login-header">
+            <h3 class="text-center">Авторизація</h3>
+        </div>
+            <br>
+    <div class="login-content">
+        <div class="login-register-form">
+            <form action="" method="POST">
+            {% csrf_token %}
+                <div class="login-content-label">{{ form.username.label }}</div>
+            {{ form.username }}
+                <br>
+                <div class="login-content-label"> {{ form.password.label }}</div>
+            {{ form.password }}
+
+            {% if form.errors %}
+            <br>
+            <br>
+            <div class="login-error"   >
+                {{ form.non_field_errors }}
+            </div>
+            <br>
+            {% else %}
+                <br>
+                <br>
+            {% endif %}
+             <input type="submit" class="btn btn-success btn-block" value="Увійти">
+            </form>
+        </div>
+        </div>
+        <br>
+    <br>
+{% include "products_scroll.html" %}
+    </div>
+
+
+
+{% endblock content %}

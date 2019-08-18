@@ -1,0 +1,109 @@
+{% extends 'wrapper.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+       <br>
+
+    <h3 class="">Здравствуйте, {{ user.first_name }}</h3>
+    <br></br>
+   <div class="table-content table-responsive product-area-bg  "  >
+                                <table class="container">
+                                    <thead>
+                                        <tr>
+                                            <th>Логин</th>
+                                            <th>Имя</th>
+                                            <th>Номер</th>
+                                            <th>Email</th>
+                                            <th>Редактировать</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody  class="cart-table" >
+                                            <th>{{ user.username }}</th>
+                                            <th>{{ user.first_name }} {{ user.last_name }}</th>
+                                            <th>{{ phone }}</th>
+                                            <th>{{ user.email }}</th>
+                                            <th> <div class="cart-shiping-update"><a href="{% url 'account_edit' %}" >Редактировать</a> </div></th>
+                                    </tbody>
+                                </table>
+                            </div>
+    <br>
+    <div class="cart-main-area ptb-100">
+            <div class="container" >
+                <h2 class="page-title">Ваши заказы</h2><br>
+                <div class="row cart-container">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="table-content table-responsive">
+                                <table class="container">
+                                    <thead>
+                                    <tr>
+                                    <td>Номер заказа</td>
+                                    <td>Дата заказа</td>
+                                    <td>Стоимость заказа</td>
+                                    <td>Детали заказа</td>
+                                </tr>
+                                    </thead>
+                                <tbody>
+                                 {% for item in order %}
+
+
+
+
+                                <tr class="theme-bg product-cont" >
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.date }}</td>
+                                    <td>₴ {{ item.total }}</td>
+                                    <td>
+
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal-{{ item.id }}">Детали заказа
+                                        </button>
+
+                                        <div class="modal fade" id="myModal-{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel">Заказ №-{{ item.id }}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table">
+                                                {% for item in item.items.item.all %}
+                                                    <tr>
+                                                        <td>{{ item.product.title }}</td>
+                                                        <td>{{ item.qty }} шт.</td>
+                                                        <td>{{ item.item_total }} грн.</td>
+                                                    </tr>
+
+                                                    {% endfor %}
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>Итого: </td>
+                                                        <td>₴ {{ item.total }}</td>
+
+                                                    </tr>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
+
+
+</div>
+
+
+
+{% endblock content %}
